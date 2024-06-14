@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import GameInit from "./components/gameInit";
 
@@ -29,7 +27,7 @@ export default function Home() {
                <section className="mt-10 h-[75vh] bg-[#0f1329d8] w-[800px] shadow-lg">
                   <div className="mt-10 flex flex-col gap-5 px-5">
                      <h1 className="text-white text-2xl text-center">
-                        Teste suas abilidades de digitação com codigos
+                        Teste suas habilidades de digitação com codigos
                      </h1>
 
                      <div className="flex flex-col gap-2 items-center w-[200px]">

@@ -47,9 +47,10 @@ const GameInit = () => {
       setTempoRestante(tempoLimite);
    }
 
+   //Funções de finalização do jogo
    function finalizarJogo() {
       setIndiceAtual(0);
-      setTempoRestante(400000);
+      setTempoRestante(4999999999999);
    }
 
    useEffect(() => {
@@ -58,20 +59,16 @@ const GameInit = () => {
 
    useEffect(() => {
       function handleKeyDown(event: KeyboardEvent) {
-         // verificando se a tecla pressionada é uma letra
          const letraDigitada = event.key.toUpperCase();
          const letraAtual = letrasSequencia[indiceAtual];
-         if (letraAtual) {
-            // verificando se a letra pressionada e a correta
-            if (letraDigitada === letraAtual) {
-               setIndiceAtual(indiceAtual + 1);
-            }
-            // verificando se a letra pressionada e a incorreta
-            else {
-               setErros("hidden");
-               setOpen3("");
-               finalizarJogo();
-            }
+
+         // verificando se a letra pressionada e a correta ou incorreta
+         if (letraDigitada === letraAtual) {
+            setIndiceAtual(indiceAtual + 1);
+         } else {
+            setErros("hidden");
+            setOpen3("");
+            finalizarJogo();
          }
       }
 
@@ -154,7 +151,7 @@ const GameInit = () => {
                </h1>
 
                <p className="text-sm -mb-2">
-                  Precione as teclas na ordem correta.
+                  Pressione as teclas na ordem correta.
                </p>
 
                <div className="flex items-center justify-center gap-1 pb-8">
@@ -225,7 +222,7 @@ const GameInit = () => {
                   Mini-Game
                </h1>
 
-               <p className="text-sm ">Parabens! Você conseguiu!</p>
+               <p className="text-sm ">Parabéns! Você conseguiu!</p>
 
                <div className="flex items-center gap-2">
                   <AlertDialogCancel
