@@ -114,9 +114,15 @@ const GameInit = () => {
 
    return (
       <AlertDialog>
-         <AlertDialogTrigger className="w-[90px] h-[36px] text-white bg-yellow-500 bg-background hover:bg-foreground hover:text-white inline-flex items-center justify-center whitespace-nowrap rounded-xl text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
+         <AlertDialogTrigger
+            onClick={() => {
+               iniciarJogo();
+            }}
+            className="w-[90px] h-[36px] text-white bg-yellow-500 bg-background hover:bg-foreground hover:text-white inline-flex items-center justify-center whitespace-nowrap rounded-xl text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+         >
             Começar
          </AlertDialogTrigger>
+
          <AlertDialogContent className="text-center bg-foreground border-yellow-500">
             <div className={`flex flex-col gap-5 relative ${open}`}>
                <h1 className="text-2xl text-yellow-500 font-semibold ">
