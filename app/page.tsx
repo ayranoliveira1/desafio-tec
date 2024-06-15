@@ -1,13 +1,14 @@
 import Image from "next/image";
-import GameInit from "./components/gameInit";
 import Header from "./components/header";
+import GtaSGameInit from "./components/gtaS-gamenit";
+import GtaVGameInit from "./components/gtaV-gameinit";
 
 export default function Home() {
    return (
       <>
          <Header />
 
-         <main className="w-full h-[755px]">
+         <main className="w-full h-[755px] animate-fade-in-4s ">
             <div className="container mx-auto flex items-center gap-10 justify-center">
                <section className="mt-10 h-[75vh] bg-[#0f1329d8] w-[390px] flex flex-col items-center shadow-2xl border-solid border-[#0a0d1f] border-2">
                   <div className="mt-10 flex flex-col items-center gap-5">
@@ -35,19 +36,34 @@ export default function Home() {
                </section>
 
                <section className="mt-10 h-[75vh] bg-[#0f1329d8] w-[800px] shadow-2xl border-solid border-[#0f1329] border-2">
-                  <div className="mt-10 flex flex-col gap-5 px-5">
+                  <div className="mt-10 flex items-center gap-16 px-5">
                      <div className="flex flex-col gap-2 items-center w-[200px]">
                         <h1 className="text-white text-lg ">GTA San Andreas</h1>
 
                         <Image
-                           src={"/gta.png"}
+                           src={"/gtaS.png"}
                            alt="logo"
                            width={200}
                            height={200}
                         />
 
                         <div className="mx-auto">
-                           <GameInit />
+                           <GtaSGameInit />
+                        </div>
+                     </div>
+
+                     <div className="flex flex-col gap-2 items-center w-[200px]">
+                        <h1 className="text-white text-lg ">GTA V</h1>
+
+                        <Image
+                           src={"/gtaV.png"}
+                           alt="logo"
+                           width={188}
+                           height={200}
+                        />
+
+                        <div className="mx-auto">
+                           <GtaVGameInit />
                         </div>
                      </div>
                   </div>
