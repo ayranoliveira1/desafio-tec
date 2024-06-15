@@ -3,7 +3,7 @@ export function sortearCodigo(listaDeCodigos: string[]): string {
    return listaDeCodigos[indiceSorteado];
 }
 
-export const listaDeCodigos = [
+export const listaDeCodigosGtaS = [
    "LXGIWYL",
    "KJKSZPJ",
    "UZUMYMW",
@@ -19,4 +19,28 @@ export const listaDeCodigos = [
    "BEKKNQV",
    "MUNASEF",
    "BAGUVIX",
+];
+
+export const listaDeCodigosGtaV = [
+   "CATCHME",
+   "SKYDIVE",
+   "FLOATER",
+   "LIQUOR",
+   "SLOWMO",
+   "SKYFALL",
+   "TURTLE",
+   "FUGITIVE",
+   "LAWYERUP",
+   "HOTHANDS",
+   "POWERUP",
+   "DEADEYE",
+   "BANDIT",
+   "TRASHED",
+   "SNOWDAY",
+   "BUZZOFF",
+   "COMET",
+   "ROCKET",
+   "OFFROAD",
+   "RAPIDGT",
+   "VINEWOOD",
 ];
