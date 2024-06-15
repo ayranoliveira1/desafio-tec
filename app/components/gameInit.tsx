@@ -13,9 +13,9 @@ import {
 import { Button } from "./ui/button";
 
 const GameInit = () => {
-   const [open, setOpen] = useState<string>("");
-   const [open2, setOpen2] = useState<string>("hidden");
-   const [open3, setOpen3] = useState<string>("hidden");
+   const [openInitial, setOpenInitial] = useState<string>("");
+   const [openGame, setOpenGame] = useState<string>("hidden");
+   const [openKeyError, setOpenKeyError] = useState<string>("hidden");
    const [final, setFinal] = useState<string>("hidden");
    const [erroTempo, setErroTempo] = useState<string>("hidden");
 
@@ -36,8 +36,8 @@ const GameInit = () => {
 
    //Funções de inicialização do jogo
    const handleClickInit = () => {
-      setOpen("hidden");
-      setOpen2("");
+      setOpenInitial("hidden");
+      setOpenGame("");
    };
 
    function iniciarJogo() {
@@ -50,7 +50,7 @@ const GameInit = () => {
    //Funções de finalização do jogo
    function finalizarJogo() {
       setIndiceAtual(0);
-      setTempoRestante(4999999999999);
+      setTempoRestante(2 ^ 53);
    }
 
    useEffect(() => {
@@ -67,11 +67,10 @@ const GameInit = () => {
             setIndiceAtual(indiceAtual + 1);
          } else {
             setErros("hidden");
-            setOpen3("");
+            setOpenKeyError("");
             finalizarJogo();
          }
       }
-
       // adicionando evento de teclado
       document.addEventListener("keypress", handleKeyDown);
       return () => {
@@ -85,7 +84,7 @@ const GameInit = () => {
          indiceAtual === letrasSequencia.length &&
          letrasSequencia.length > 0
       ) {
-         setOpen2("hidden");
+         setOpenGame("hidden");
          setFinal("");
          finalizarJogo();
       }
@@ -98,7 +97,7 @@ const GameInit = () => {
             setTempoRestante(tempoRestante - 1);
          } else {
             clearInterval(timer);
-            setOpen2("hidden");
+            setOpenGame("hidden");
             setErroTempo("");
          }
       }, 1000);
@@ -124,13 +123,13 @@ const GameInit = () => {
          </AlertDialogTrigger>
 
          <AlertDialogContent className="text-center bg-foreground border-yellow-500">
-            <div className={`flex flex-col gap-5 relative ${open}`}>
+            <div className={`flex flex-col gap-5 relative ${openInitial}`}>
                <h1 className="text-2xl text-yellow-500 font-semibold ">
                   Mini-Game
                </h1>
                <Button
                   onClick={() => {
-                     setOpen2("");
+                     setOpenGame("");
                      setErros("");
                      handleClickInit();
                      iniciarJogo();
@@ -150,7 +149,7 @@ const GameInit = () => {
             </div>
 
             <div
-               className={`${open2} ${erros} relative text-white flex items-center flex-col gap-4`}
+               className={`${openGame} ${erros} relative text-white flex items-center flex-col gap-4`}
             >
                <h1 className="text-2xl text-yellow-500 font-semibold ">
                   Mini-Game
@@ -187,7 +186,7 @@ const GameInit = () => {
             </div>
 
             <div
-               className={`${open3} text-white flex items-center flex-col gap-4`}
+               className={`${openKeyError} text-white flex items-center flex-col gap-4`}
             >
                <h1 className="text-2xl text-yellow-500 font-semibold ">
                   Mini-Game
@@ -198,8 +197,8 @@ const GameInit = () => {
                <div className="flex items-center gap-2">
                   <AlertDialogCancel
                      onClick={() => {
-                        setOpen3("hidden");
-                        setOpen("");
+                        setOpenKeyError("hidden");
+                        setOpenInitial("");
                         iniciarJogo();
                      }}
                      className="inline-flex items-center justify-center whitespace-nowrap rounded-md  mx-auto font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg- text-primary-foreground hover:bg-primary/90 w-[180px] h-[50px] text-white text-lg border-[#4b4b4b] hover:text-white"
@@ -209,7 +208,7 @@ const GameInit = () => {
 
                   <Button
                      onClick={() => {
-                        setOpen3("hidden");
+                        setOpenKeyError("hidden");
                         setErros("");
                         iniciarJogo();
                      }}
@@ -234,7 +233,7 @@ const GameInit = () => {
                   <AlertDialogCancel
                      onClick={() => {
                         setFinal("hidden");
-                        setOpen("");
+                        setOpenInitial("");
                         iniciarJogo();
                      }}
                      className="inline-flex items-center justify-center whitespace-nowrap rounded-md  mx-auto font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg- text-primary-foreground hover:bg-primary/90 w-[180px] h-[50px] text-white text-lg border-[#4b4b4b] hover:text-white"
@@ -244,7 +243,7 @@ const GameInit = () => {
                   <Button
                      onClick={() => {
                         setFinal("hidden");
-                        setOpen2("");
+                        setOpenGame("");
                         iniciarJogo();
                      }}
                      variant="default"
@@ -268,7 +267,7 @@ const GameInit = () => {
                   <AlertDialogCancel
                      onClick={() => {
                         setErroTempo("hidden");
-                        setOpen("");
+                        setOpenInitial("");
                         iniciarJogo();
                      }}
                      className="inline-flex items-center justify-center whitespace-nowrap rounded-md  mx-auto font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg- text-primary-foreground hover:bg-primary/90 w-[180px] h-[50px] text-white text-lg border-[#4b4b4b] hover:text-white"
@@ -279,7 +278,7 @@ const GameInit = () => {
                   <Button
                      onClick={() => {
                         setErroTempo("hidden");
-                        setOpen2("");
+                        setOpenGame("");
                         iniciarJogo();
                      }}
                      variant="default"
