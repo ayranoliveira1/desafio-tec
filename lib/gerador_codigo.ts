@@ -19,6 +19,20 @@ export const listaDeCodigosGtaS = [
    "BEKKNQV",
    "MUNASEF",
    "BAGUVIX",
+   "AGBDLCID",
+   "AIWPRTON",
+   "AMOMHRER",
+   "AQTBCODX",
+   "CQZIJMB",
+   "EEGCYXT",
+   "JUMPJET",
+   "PDNEJOH",
+   "VPJTQWV",
+   "URKQSRK",
+   "YECGAA",
+   "AIYPWZQP",
+   "AUIFRVQS",
+   "ALNSFMZO",
 ];
 
 export const listaDeCodigosGtaV = [
