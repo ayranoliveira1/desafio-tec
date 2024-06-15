@@ -74,3 +74,30 @@
       @apply bg-background text-foreground;
    }
 }
+
+@keyframes ease {
+   0% {
+      opacity: 0;
+   }
+   100% {
+      opacity: 1;
+   }
+}
+@keyframes fadeIn {
+   0% {
+      opacity: 0;
+      transform: translateY(50px);
+   }
+   100% {
+      opacity: 1;
+      transform: translateY(0);
+   }
+}
+
+.animate-fade-in {
+   animation: ease 2.5s ease;
+}
+
+.animate-fade-in-4s {
+   animation: fadeIn 2s ease-in-out;
+}

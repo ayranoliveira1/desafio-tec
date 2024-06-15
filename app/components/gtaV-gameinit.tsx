@@ -2,7 +2,7 @@
 
 import { IoCloseSharp } from "react-icons/io5";
 import { useEffect, useState } from "react";
-import { listaDeCodigos, sortearCodigo } from "@/lib/gerador_codigo";
+import { listaDeCodigosGtaV, sortearCodigo } from "@/lib/gerador_codigo";
 
 import {
    AlertDialog,
@@ -13,7 +13,7 @@ import {
 import { Button } from "./ui/button";
 import AnimateText from "./animate";
 
-const GameInit = () => {
+const GtaVGameInit = () => {
    const [openInitial, setOpenInitial] = useState<string>("");
    const [openGame, setOpenGame] = useState<string>("hidden");
    const [openKeyError, setOpenKeyError] = useState<string>("hidden");
@@ -31,13 +31,13 @@ const GameInit = () => {
 
    // funções de audio
    const audioComplete = () => {
-      const audio = new Audio("/complete.mp3");
+      const audio = new Audio("/completeV.mp3");
       audio.volume = 0.4;
       audio.play();
    };
 
    const audioKey = () => {
-      const audio = new Audio("/tecla.mp3");
+      const audio = new Audio("/keyV.mp3");
       audio.volume = 0.5;
       audio.play();
    };
@@ -49,7 +49,7 @@ const GameInit = () => {
    };
 
    function iniciarJogo() {
-      const novaSequencia = sortearCodigo(listaDeCodigos).split("");
+      const novaSequencia = sortearCodigo(listaDeCodigosGtaV).split("");
       setLetrasSequencia(novaSequencia);
       setIndiceAtual(0);
       setTempoRestante(tempoLimite);
@@ -95,7 +95,7 @@ const GameInit = () => {
       ) {
          setOpenGame("hidden");
          setFinal("");
-         setText("Missão completa!");
+         setText("Missão concluída!");
          audioComplete();
          finalizarJogo();
       }
@@ -127,6 +127,8 @@ const GameInit = () => {
          <AlertDialogTrigger
             onClick={() => {
                iniciarJogo();
+               setOpenKeyError("hidden");
+               setErroTempo("hidden");
             }}
             className="w-[90px] h-[36px] text-white bg-yellow-500 bg-background hover:bg-foreground hover:text-white inline-flex items-center justify-center whitespace-nowrap rounded-xl text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
          >
@@ -308,4 +310,4 @@ const GameInit = () => {
    );
 };
 
-export default GameInit;
+export default GtaVGameInit;
