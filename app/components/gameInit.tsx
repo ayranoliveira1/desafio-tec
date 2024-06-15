@@ -11,6 +11,7 @@ import {
    AlertDialogTrigger,
 } from "./ui/alert-dialog";
 import { Button } from "./ui/button";
+import AnimateText from "./animate";
 
 const GameInit = () => {
    const [openInitial, setOpenInitial] = useState<string>("");
@@ -19,22 +20,29 @@ const GameInit = () => {
    const [final, setFinal] = useState<string>("hidden");
    const [erroTempo, setErroTempo] = useState<string>("hidden");
 
-   //Configuração do tempo
+   // configuração do tempo
    const tempoLimite = 7;
 
    const [letrasSequencia, setLetrasSequencia] = useState<string[]>([]);
    const [indiceAtual, setIndiceAtual] = useState<number>(0);
    const [erros, setErros] = useState<string>("");
    const [tempoRestante, setTempoRestante] = useState<number>(tempoLimite);
+   const [text, setText] = useState<string>("");
 
-   //Funções de audio
-   const audioErro = () => {
-      const audio = new Audio();
-      audio.volume = 0.2;
+   // funções de audio
+   const audioComplete = () => {
+      const audio = new Audio("/complete.mp3");
+      audio.volume = 0.4;
       audio.play();
    };
 
-   //Funções de inicialização do jogo
+   const audioKey = () => {
+      const audio = new Audio("/tecla.mp3");
+      audio.volume = 0.5;
+      audio.play();
+   };
+
+   // funções de inicialização do jogo
    const handleClickInit = () => {
       setOpenInitial("hidden");
       setOpenGame("");
@@ -47,10 +55,10 @@ const GameInit = () => {
       setTempoRestante(tempoLimite);
    }
 
-   //Funções de finalização do jogo
+   // funções de finalização do jogo
    function finalizarJogo() {
       setIndiceAtual(0);
-      setTempoRestante(2 ^ 53);
+      setTempoRestante(2 ^ 999999);
    }
 
    useEffect(() => {
@@ -65,6 +73,7 @@ const GameInit = () => {
          // verificando se a letra pressionada e a correta ou incorreta
          if (letraDigitada === letraAtual) {
             setIndiceAtual(indiceAtual + 1);
+            audioKey();
          } else {
             setErros("hidden");
             setOpenKeyError("");
@@ -86,6 +95,8 @@ const GameInit = () => {
       ) {
          setOpenGame("hidden");
          setFinal("");
+         setText("Missão completa!");
+         audioComplete();
          finalizarJogo();
       }
    }, [indiceAtual, letrasSequencia]);
@@ -221,20 +232,23 @@ const GameInit = () => {
             </div>
 
             <div
-               className={`${final} text-white flex items-center flex-col gap-4`}
+               className={`${final} text-white flex items-start flex-col gap-4`}
             >
-               <h1 className="text-2xl text-yellow-500 font-semibold ">
+               <h1 className="text-2xl text-yellow-500 font-semibold mx-auto">
                   Mini-Game
                </h1>
 
-               <p className="text-sm ">Parabéns! Você conseguiu!</p>
+               <div className="ml-[155px]">
+                  <AnimateText text={text} />
+               </div>
 
-               <div className="flex items-center gap-2">
+               <div className="flex items-center gap-2 mx-auto">
                   <AlertDialogCancel
                      onClick={() => {
                         setFinal("hidden");
                         setOpenInitial("");
                         iniciarJogo();
+                        setText("");
                      }}
                      className="inline-flex items-center justify-center whitespace-nowrap rounded-md  mx-auto font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg- text-primary-foreground hover:bg-primary/90 w-[180px] h-[50px] text-white text-lg border-[#4b4b4b] hover:text-white"
                   >
@@ -245,6 +259,7 @@ const GameInit = () => {
                         setFinal("hidden");
                         setOpenGame("");
                         iniciarJogo();
+                        setText("");
                      }}
                      variant="default"
                      className="w-[180px] h-[50px] border-none text-white text-lg bg-yellow-500 mx-auto"
