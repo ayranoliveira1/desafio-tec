@@ -179,10 +179,12 @@ const GtaVGameInit = () => {
                         style={{
                            backgroundColor:
                               index < currentIndex
-                                 ? "green"
+                                 ? " rgb(234 179 8 / var(--tw-text-opacity))"
                                  : index === currentIndex
-                                 ? "#09121d"
+                                 ? "#011553"
                                  : "transparent",
+                           color: index < currentIndex ? "black" : "white",
+                           fontWeight: index < currentIndex ? "500" : "400",
                         }}
                         className={`border flex justify-center items-center
                                       border-[#aaaaaa] w-[50px] h-[50px] rounded-md`}
