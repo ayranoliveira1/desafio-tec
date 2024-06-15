@@ -18,15 +18,15 @@ const GtaSGameInit = () => {
    const [openGame, setOpenGame] = useState<string>("hidden");
    const [openKeyError, setOpenKeyError] = useState<string>("hidden");
    const [final, setFinal] = useState<string>("hidden");
-   const [erroTempo, setErroTempo] = useState<string>("hidden");
+   const [timeError, setTimeError] = useState<string>("hidden");
 
    // configuração do tempo
-   const tempoLimite = 7;
+   const limitTime = 7;
 
-   const [letrasSequencia, setLetrasSequencia] = useState<string[]>([]);
-   const [indiceAtual, setIndiceAtual] = useState<number>(0);
+   const [sequenceLetters, setSequenceLetters] = useState<string[]>([]);
+   const [currentIndex, setCurrentIndex] = useState<number>(0);
    const [erros, setErros] = useState<string>("");
-   const [tempoRestante, setTempoRestante] = useState<number>(tempoLimite);
+   const [timeLeft, setTimeLeft] = useState<number>(limitTime);
    const [text, setText] = useState<string>("");
 
    // funções de audio
@@ -50,15 +50,15 @@ const GtaSGameInit = () => {
 
    function iniciarJogo() {
       const novaSequencia = sortearCodigo(listaDeCodigosGtaS).split("");
-      setLetrasSequencia(novaSequencia);
-      setIndiceAtual(0);
-      setTempoRestante(tempoLimite);
+      setSequenceLetters(novaSequencia);
+      setCurrentIndex(0);
+      setTimeLeft(limitTime);
    }
 
    // funções de finalização do jogo
    function finalizarJogo() {
-      setIndiceAtual(0);
-      setTempoRestante(2 ^ 999999);
+      setCurrentIndex(0);
+      setTimeLeft(2 ^ 999999);
    }
 
    useEffect(() => {
@@ -68,11 +68,11 @@ const GtaSGameInit = () => {
    useEffect(() => {
       function handleKeyDown(event: KeyboardEvent) {
          const letraDigitada = event.key.toUpperCase();
-         const letraAtual = letrasSequencia[indiceAtual];
+         const letraAtual = sequenceLetters[currentIndex];
 
          // verificando se a letra pressionada e a correta ou incorreta
          if (letraDigitada === letraAtual) {
-            setIndiceAtual(indiceAtual + 1);
+            setCurrentIndex(currentIndex + 1);
             audioKey();
          } else {
             setErros("hidden");
@@ -85,13 +85,13 @@ const GtaSGameInit = () => {
       return () => {
          document.removeEventListener("keypress", handleKeyDown);
       };
-   }, [letrasSequencia, indiceAtual, erros]);
+   }, [sequenceLetters, currentIndex, erros]);
 
    // verificando se todas as teclas foram digitadas corretamente
    useEffect(() => {
       if (
-         indiceAtual === letrasSequencia.length &&
-         letrasSequencia.length > 0
+         currentIndex === sequenceLetters.length &&
+         sequenceLetters.length > 0
       ) {
          setOpenGame("hidden");
          setFinal("");
@@ -99,26 +99,26 @@ const GtaSGameInit = () => {
          audioComplete();
          finalizarJogo();
       }
-   }, [indiceAtual, letrasSequencia]);
+   }, [currentIndex, sequenceLetters]);
 
    // verificando se o tempo do jogo acabou
    useEffect(() => {
       const timer = setInterval(() => {
-         if (tempoRestante > 0) {
-            setTempoRestante(tempoRestante - 1);
+         if (timeLeft > 0) {
+            setTimeLeft(timeLeft - 1);
          } else {
             clearInterval(timer);
             setOpenGame("hidden");
-            setErroTempo("");
+            setTimeError("");
          }
       }, 1000);
 
       return () => clearInterval(timer);
-   }, [tempoRestante]);
+   }, [timeLeft]);
 
    // estilos de barra de progresso
    const barraProgressoEstilo = {
-      width: `${(tempoRestante / tempoLimite) * 100}%`,
+      width: `${(timeLeft / limitTime) * 100}%`,
       transition: "width 1s linear",
    };
 
@@ -128,7 +128,7 @@ const GtaSGameInit = () => {
             onClick={() => {
                iniciarJogo();
                setOpenKeyError("hidden");
-               setErroTempo("hidden");
+               setTimeError("hidden");
             }}
             className="w-[90px] h-[36px] text-white bg-yellow-500 bg-background hover:bg-foreground hover:text-white inline-flex items-center justify-center whitespace-nowrap rounded-xl text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
          >
@@ -173,14 +173,14 @@ const GtaSGameInit = () => {
                </p>
 
                <div className="flex items-center justify-center gap-1 pb-8">
-                  {letrasSequencia.map((letra, index) => (
+                  {sequenceLetters.map((letra, index) => (
                      <div
                         key={index}
                         style={{
                            backgroundColor:
-                              index < indiceAtual
+                              index < currentIndex
                                  ? "green"
-                                 : index === indiceAtual
+                                 : index === currentIndex
                                  ? "#09121d"
                                  : "transparent",
                         }}
@@ -272,7 +272,7 @@ const GtaSGameInit = () => {
             </div>
 
             <div
-               className={`${erroTempo} text-white flex items-center flex-col relative gap-4`}
+               className={`${timeError} text-white flex items-center flex-col relative gap-4`}
             >
                <h1 className="text-2xl text-yellow-500 font-semibold ">
                   Mini-Game
@@ -283,7 +283,7 @@ const GtaSGameInit = () => {
                <div className="flex items-center gap-2">
                   <AlertDialogCancel
                      onClick={() => {
-                        setErroTempo("hidden");
+                        setTimeError("hidden");
                         setOpenInitial("");
                         iniciarJogo();
                      }}
@@ -294,7 +294,7 @@ const GtaSGameInit = () => {
 
                   <Button
                      onClick={() => {
-                        setErroTempo("hidden");
+                        setTimeError("hidden");
                         setOpenGame("");
                         iniciarJogo();
                      }}
