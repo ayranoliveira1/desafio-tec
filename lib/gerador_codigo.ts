@@ -1,4 +1,4 @@
-export function sortearCodigo(listaDeCodigos: string[]): string {
+export function codeDrawer(listaDeCodigos: string[]): string {
    const indiceSorteado = Math.floor(Math.random() * listaDeCodigos.length);
    return listaDeCodigos[indiceSorteado];
 }

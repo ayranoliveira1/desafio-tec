@@ -2,7 +2,7 @@
 
 import { IoCloseSharp } from "react-icons/io5";
 import { useEffect, useState } from "react";
-import { listaDeCodigosGtaS, sortearCodigo } from "@/lib/gerador_codigo";
+import { listaDeCodigosGtaS, codeDrawer } from "@/lib/gerador_codigo";
 
 import {
    AlertDialog,
@@ -25,7 +25,7 @@ const GtaSGameInit = () => {
 
    const [sequenceLetters, setSequenceLetters] = useState<string[]>([]);
    const [currentIndex, setCurrentIndex] = useState<number>(0);
-   const [erros, setErros] = useState<string>("");
+   const [error, setError] = useState<string>("");
    const [timeLeft, setTimeLeft] = useState<number>(limitTime);
    const [text, setText] = useState<string>("");
 
@@ -48,36 +48,36 @@ const GtaSGameInit = () => {
       setOpenGame("");
    };
 
-   function iniciarJogo() {
-      const novaSequencia = sortearCodigo(listaDeCodigosGtaS).split("");
-      setSequenceLetters(novaSequencia);
+   function startGame() {
+      const newSequence = codeDrawer(listaDeCodigosGtaS).split("");
+      setSequenceLetters(newSequence);
       setCurrentIndex(0);
       setTimeLeft(limitTime);
    }
 
    // funções de finalização do jogo
-   function finalizarJogo() {
+   function endGame() {
       setCurrentIndex(0);
       setTimeLeft(2 ^ 999999);
    }
 
    useEffect(() => {
-      iniciarJogo();
+      startGame();
    }, []);
 
    useEffect(() => {
       function handleKeyDown(event: KeyboardEvent) {
-         const letraDigitada = event.key.toUpperCase();
-         const letraAtual = sequenceLetters[currentIndex];
+         const typedLetter = event.key.toUpperCase();
+         const currentLetter = sequenceLetters[currentIndex];
 
          // verificando se a letra pressionada e a correta ou incorreta
-         if (letraDigitada === letraAtual) {
+         if (typedLetter === currentLetter) {
             setCurrentIndex(currentIndex + 1);
             audioKey();
          } else {
-            setErros("hidden");
+            setError("hidden");
             setOpenKeyError("");
-            finalizarJogo();
+            endGame();
          }
       }
       // adicionando evento de teclado
@@ -85,7 +85,7 @@ const GtaSGameInit = () => {
       return () => {
          document.removeEventListener("keypress", handleKeyDown);
       };
-   }, [sequenceLetters, currentIndex, erros]);
+   }, [sequenceLetters, currentIndex, error]);
 
    // verificando se todas as teclas foram digitadas corretamente
    useEffect(() => {
@@ -97,7 +97,7 @@ const GtaSGameInit = () => {
          setFinal("");
          setText("Missão concluída!");
          audioComplete();
-         finalizarJogo();
+         endGame();
       }
    }, [currentIndex, sequenceLetters]);
 
@@ -117,7 +117,7 @@ const GtaSGameInit = () => {
    }, [timeLeft]);
 
    // estilos de barra de progresso
-   const barraProgressoEstilo = {
+   const progressBarStyle = {
       width: `${(timeLeft / limitTime) * 100}%`,
       transition: "width 1s linear",
    };
@@ -126,7 +126,7 @@ const GtaSGameInit = () => {
       <AlertDialog>
          <AlertDialogTrigger
             onClick={() => {
-               iniciarJogo();
+               startGame();
                setOpenKeyError("hidden");
                setTimeError("hidden");
             }}
@@ -143,9 +143,9 @@ const GtaSGameInit = () => {
                <Button
                   onClick={() => {
                      setOpenGame("");
-                     setErros("");
+                     setError("");
                      handleClickInit();
-                     iniciarJogo();
+                     startGame();
                   }}
                   variant="default"
                   className="w-[180px] h-[60px] border-none text-white text-lg bg-yellow-500 mx-auto"
@@ -162,7 +162,7 @@ const GtaSGameInit = () => {
             </div>
 
             <div
-               className={`${openGame} ${erros} relative text-white flex items-center flex-col gap-4`}
+               className={`${openGame} ${error} relative text-white flex items-center flex-col gap-4`}
             >
                <h1 className="text-2xl text-yellow-500 font-semibold ">
                   Mini-Game
@@ -196,7 +196,7 @@ const GtaSGameInit = () => {
 
                <div
                   className="absolute left-0 bottom-0 bg-yellow-500 w-[440px] h-[10px]"
-                  style={barraProgressoEstilo}
+                  style={progressBarStyle}
                ></div>
             </div>
 
@@ -214,7 +214,7 @@ const GtaSGameInit = () => {
                      onClick={() => {
                         setOpenKeyError("hidden");
                         setOpenInitial("");
-                        iniciarJogo();
+                        startGame();
                      }}
                      className="inline-flex items-center justify-center whitespace-nowrap rounded-md  mx-auto font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg- text-primary-foreground hover:bg-primary/90 w-[180px] h-[50px] text-white text-lg border-[#4b4b4b] hover:text-white"
                   >
@@ -224,8 +224,8 @@ const GtaSGameInit = () => {
                   <Button
                      onClick={() => {
                         setOpenKeyError("hidden");
-                        setErros("");
-                        iniciarJogo();
+                        setError("");
+                        startGame();
                      }}
                      variant="default"
                      className="w-[180px] h-[50px] border-none text-white text-lg bg-yellow-500 mx-auto"
@@ -251,7 +251,7 @@ const GtaSGameInit = () => {
                      onClick={() => {
                         setFinal("hidden");
                         setOpenInitial("");
-                        iniciarJogo();
+                        startGame();
                         setText("");
                      }}
                      className="inline-flex items-center justify-center whitespace-nowrap rounded-md  mx-auto font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg- text-primary-foreground hover:bg-primary/90 w-[180px] h-[50px] text-white text-lg border-[#4b4b4b] hover:text-white"
@@ -262,7 +262,7 @@ const GtaSGameInit = () => {
                      onClick={() => {
                         setFinal("hidden");
                         setOpenGame("");
-                        iniciarJogo();
+                        startGame();
                         setText("");
                      }}
                      variant="default"
@@ -287,7 +287,7 @@ const GtaSGameInit = () => {
                      onClick={() => {
                         setTimeError("hidden");
                         setOpenInitial("");
-                        iniciarJogo();
+                        startGame();
                      }}
                      className="inline-flex items-center justify-center whitespace-nowrap rounded-md  mx-auto font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg- text-primary-foreground hover:bg-primary/90 w-[180px] h-[50px] text-white text-lg border-[#4b4b4b] hover:text-white"
                   >
@@ -298,7 +298,7 @@ const GtaSGameInit = () => {
                      onClick={() => {
                         setTimeError("hidden");
                         setOpenGame("");
-                        iniciarJogo();
+                        startGame();
                      }}
                      variant="default"
                      className="w-[180px] h-[50px] border-none text-white text-lg bg-yellow-500 mx-auto"
