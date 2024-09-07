@@ -48,6 +48,7 @@ const GtaVGameInit = () => {
       setOpenGame("");
    };
 
+   // função de inicialização do jogo
    function startGame() {
       const newSequence = codeDrawer(listaDeCodigosGtaV).split("");
       setSequenceLetters(newSequence);
@@ -66,6 +67,7 @@ const GtaVGameInit = () => {
    }, []);
 
    useEffect(() => {
+      // verificando se a tecla pressionada e a correta
       function handleKeyDown(event: KeyboardEvent) {
          const typedLetter = event.key.toUpperCase();
          const currentLetter = sequenceLetters[currentIndex];
