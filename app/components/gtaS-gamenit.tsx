@@ -48,6 +48,7 @@ const GtaSGameInit = () => {
       setOpenGame("");
    };
 
+   // função de inicialização do jogo
    function startGame() {
       const newSequence = codeDrawer(listaDeCodigosGtaS).split("");
       setSequenceLetters(newSequence);

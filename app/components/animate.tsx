@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 const AnimateText = ({ text }: { text: string }) => {
    const [showText, setShowText] = useState("");
 
+   // Display text one by one
    useEffect(() => {
       let currentText = "";
       const displayText = async () => {
