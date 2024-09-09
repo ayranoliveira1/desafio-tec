@@ -174,6 +174,7 @@ const GtaSGameInit = () => {
                </p>
 
                <div className="flex items-center justify-center gap-1 pb-8">
+                  {/* renderizando as teclas */}
                   {sequenceLetters.map((letra, index) => (
                      <div
                         key={index}
